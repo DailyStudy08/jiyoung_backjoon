@@ -1,6 +1,5 @@
-stack = []
+some_list = [1,2,3,4,5]
 
-if not stack:
-    print(True)
-else :
-    print(False)
+some_list[:3] = [2,3,4]
+
+print(some_list)

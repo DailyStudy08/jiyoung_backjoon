@@ -1,8 +1,8 @@
 import sys
 input = sys.stdin.read
+output = sys.stdout.write
 # f =  open('input.txt', 'r')
 # input = f.read
-output = sys.stdout.write
 
 
 ### 맞힌 사람을 보니 Dp 를 사용하면 시간을 많이 줄일 수 있는 것 같네요.

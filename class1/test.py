@@ -1,5 +1,5 @@
-some_list = [1,2,3,4,5]
+lst = [1,2,3,4,5,5,5]
 
-some_list[:3] = [2,3,4]
+lst.reverse()
 
-print(some_list)
+print(lst[4:4])

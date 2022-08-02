@@ -24,7 +24,7 @@ K, N, *lanline_list = list(map(int, input().split()))
 #         for i in lanline_list:
 #             lanline_count += i//ans    무조건 시간초과... 이분 탐색을 사용해야 할 듯 하다.
 
-start =0
+start =1
 end = max(lanline_list)
 
 while start <= end:

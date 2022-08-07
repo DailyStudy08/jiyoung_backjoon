@@ -50,6 +50,8 @@ def sol():
 
 output(sol())
 
+# commit conflit?
+
 
 # for i in range(len(mat)-1):
 #     if mat[i] != mat[i+1]:

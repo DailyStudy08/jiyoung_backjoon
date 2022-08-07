@@ -1,6 +1,4 @@
-a = [1,2,3]
-b = [1,2,3]
+a = ['a','c','b','d','f','e']
+a.sort()
 
-print(id(a), id(b))
-if a== b:
-    print(1)
+print(a)

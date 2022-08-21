@@ -8,27 +8,38 @@ for i in range(1,T+1):
     min_heap = []
     max_heap = []
     i_cnt = 0
-    d_cnt = 0
+
     n = int(input())
+    visited = [False]*(n+1)
     for j in range(n):
         query = input().split()
         if query[0] == 'I':
             i_cnt += 1
-            heappush(min_heap, int(query[1]))
-            heappush(max_heap, -int(query[1]))
+            heappush(min_heap, (int(query[1]), i_cnt))
+            heappush(max_heap, (-int(query[1]), i_cnt))
+            visited[i_cnt] = True
         elif query[0] == 'D':
-            d_cnt += 1
-            if d_cnt <= i_cnt:
-                if query[1] == '1':
+            if query[1] == '1':
+                while max_heap and visited[max_heap[0][1]] == False:
                     heappop(max_heap)
-                else :
+                if max_heap:
+                    a = heappop(max_heap)
+                    visited[a[1]] = False
+            else :
+                while min_heap and visited[min_heap[0][1]] == False:
                     heappop(min_heap)
-            print(min_heap)
-            print(max_heap)
-                   
+                if min_heap:
+                    a = heappop(min_heap)
+                    visited[a[1]] = False
+
+
+    while min_heap and visited[min_heap[0][1]] == False:
+        heappop(min_heap)
+    while max_heap and visited[max_heap[0][1]] == False:
+        heappop(max_heap)
     
-    if d_cnt< i_cnt:
-        print(min_heap[0], -max_heap[0])
+    if min_heap:
+        print(-max_heap[0][0], min_heap[0][0])
     else:
         print('EMPTY')
         

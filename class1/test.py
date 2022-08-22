@@ -1,56 +1,71 @@
+from heapq import heappush, heappop
 import sys
-<<<<<<< HEAD
-sys.setrecursionlimit(100000)
-N, M, R = map(int, sys.stdin.readline().split())
-order = [0]*(N+1)  # 방문순서
-cnt = 0
-
-# dfs 함수 만들기
-def dfs(g, s, visited):
-    # 시작노드 방문처리
-    visited[s] = True
-    global cnt
-    cnt += 1
-    order[s] = cnt
-    for i in g[s]:  # 현재 노드와
-        if not visited[i]:   # 연결된 노드가 방문되지 않았을 경우
-            dfs(g, i, visited)
+input = sys.stdin.readline
 
 
-visited = [False] * (N+1)
+def solve():
+    minq = []
+    maxq = []
+    pd = dict()
+    for _ in range(int(input())):
+        cmd = input().split()
+        if cmd[0] == 'I':
+            v=int(cmd[1])
+            if v in pd:
+                pd[v] += 1
+            else:
+                pd[v] = 1
+                if v >= 0:
+                    heappush(maxq, -v)
+                else:
+                    heappush(minq, v)
+        else:
+            if not minq and not maxq:
+                continue
+            if cmd[1] == '1':
+                if maxq:
+                    v=-maxq[0]
+                    if pd[v] > 1:
+                        pd[v] -= 1
+                    else:
+                        heappop(maxq)
+                        pd.pop(v)
+                else:
+                    minq.sort()
+                    v=minq[-1]
+                    if pd[v] > 1:
+                        pd[v] -= 1
+                    else:
+                        pd.pop(v)
+                        minq.pop()
+            else:
+                if minq:
+                    v=minq[0]
+                    if pd[v] > 1:
+                        pd[v] -= 1
+                    else:
+                        heappop(minq)
+                        pd.pop(v)
+                else:
+                    maxq.sort()
+                    v=-maxq[-1]
+                    if pd[v] > 1:
+                        pd[v] -= 1
+                    else:
+                        pd.pop(v)
+                        maxq.pop()
+    if minq and maxq:
+        print(-maxq[0], minq[0])
+    elif minq:
+        minq.sort()
+        print(minq[-1], minq[0])
+    elif maxq:
+        maxq.sort()
+        print(-maxq[0], -maxq[-1])
+    else:
+        print("EMPTY")
 
-graph = [[] for _ in range(N+1)]
-# 그래프 만들기
-for i in range(M):      # N줄 반복
-    u, v = map(int, sys.stdin.readline().split())
-    graph[u].append(v)
-    graph[v].append(u)
-for i in range(len(graph)):
-    graph[i].sort()
 
-dfs(graph, R, visited)
-for i in range(1,N+1):
-    print(order[i])
-=======
-# input = sys.stdin.readline
-
-n,r,c  = map(int, input().split())
-
-ans= 0
-dj = [0,1,0,1]
-di = [0,0,1,1]
-
-def Z(n,r,c,cnt):
-    if n == 1:
-        for d in range(4):
-            if r ==  di[d] and c == dj[d]:
-                print(cnt + d)              
-                
-
-    else: 
-        a = c//(2**(n-1)) + 2*(r//(2**(n-1)))
-        Z(n-1, r%(2**(n-1)), c%(2**(n-1)), cnt+a*(4**(n-1)))
-
-
-Z(n,r,c,0)
->>>>>>> ec550178e691be1a6705a5fafb3b71e48b9119bf
+if __name__ == '__main__':
+    for _ in range(int(input())):
+        solve()

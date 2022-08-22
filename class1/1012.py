@@ -1,8 +1,8 @@
 import sys
-input = sys.stdin.readline
+# input = sys.stdin.readline
 sys.setrecursionlimit(100000)
-# f = open('input.txt', 'r')
-# input = f.readline
+f = open('input.txt', 'r')
+input = f.readline
 
 T = int(input())
 

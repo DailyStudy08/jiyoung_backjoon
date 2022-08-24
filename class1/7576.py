@@ -11,7 +11,7 @@ start = []
 
 for i in range(n):
     for j in range(m):
-        if j+1 < n :
+        if j+1 < m :
             adj_lst[i][j].append((i,j+1))
         if j-1 >=0:
             adj_lst[i][j].append((i,j-1))

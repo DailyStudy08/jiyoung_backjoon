@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from datetime import datetime
 import sys
 start = datetime.now()
@@ -14,3 +15,5 @@ end = datetime.now()
 
 elapsed_time = end - start
 print(elapsed_time)
+=======
+>>>>>>> 56816b06a279af7d230aee70292fc357bf60109c

@@ -112,8 +112,6 @@ for tc in range(T):
 
     
     print(ans)
-    
-
 
 
 

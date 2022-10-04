@@ -5,9 +5,7 @@ n = int(input())
 mat = [list(map(int, input().split())) for _ in range(n)]
 dp = [[0]*(1<<n) for _ in range(n)]
 
-def back_tracking(cur, visited):
-
-    
+def back_tracking(cur, visited):    
     if dp[cur][visited] != 0:
         return dp[cur][visited]
 

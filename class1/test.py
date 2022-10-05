@@ -1,50 +1,74 @@
-def dijkstra(start, adj1):
-    # 각 노드로 가는 비용이 싼 노드들을 하나씩 선택하면서, 갈수 있는 경로가 있고, 비용이 기존 경로보다
-    # 더 싸면 업데이트 해주기
-    # start에서 각 노드로 가는 비용
-    distance = adj1[start][:]
-    # 이미 선택한 정점을 표시하기위한 리스트
-    visited = [0]*(N**2)
-    visited[start] = 1
-    distance[start] = 0
-    while sum(visited) <= (N**2)-1:
-        min_idx = 0
-        min_val = 0xffffff
-        for i in range(N**2):
-            if not visited[i] and distance[i] < min_val:
-                min_idx = i
-                min_val = distance[i]
-        # 최소 비용을 가지는 노드를 안다!
-        visited[min_idx] = 1
-        # 방금 선택된 노드를 거쳐서 갈 수 있는 노드들의 방문비용 확인
-        for i in range(N**2):
-            if not visited[i] and distance[i] > min_val + adj1[min_idx][i]:
-                distance[i] = min_val + adj1[min_idx][i]
-    return distance
+dic = {'C':'a', 'C#':'b' , 'D':'c', 'D#':'d', 'E':'e', 'F':'f','F#':'g', 'G':'h', 'G#':'i','A':'j','A#':'k', 'B':'l', 'E#':'m'}
+
+def codes_to_int(code_str):
+    int_str = ''
+    for i in range(len(code_str)):
+        if i == len(code_str)-1:
+            if code_str[i] == '#':
+                continue
+            else:
+                int_str += dic[code_str[i]]
+        else:
+            if code_str[i] == '#':
+                continue
+            else:
+                if code_str[i+1] == '#':
+                    int_str += dic[code_str[i]+code_str[i+1]]
+                else:
+                    int_str += dic[code_str[i]]
+    return int_str
 
 
-T = int(input())
-for tc in range(1, T+1):
-    N = int(input())
-    data = [list(map(int, input().split())) for _ in range(N)]
-    adj1 = [[0xffffff]*(N**2) for _ in range(N**2)]
+def solution(m, musicinfos):
+    
+    answer = '(None)'
+    time_lst = []
+    title_lst =[]
+    codes_lst =[]
+    counting_index = 0
+    index_lst = []
 
-    # (이동 전 인덱스, 이동 후 인덱스, 연료소비량) 담을 리스트
-
-    d = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-
-    for i in range(N):
-        for j in range(N):
-            # 상하좌우 이동 가능한 노드와 연료 graph에 추가
-            for x in range(4):
-                di = i + d[x][0]
-                dj = j + d[x][1]
-
-                if 0 <= di < N and 0 <= dj < N:
-                    if data[di][dj] <= data[i][j]:  # 도착지가
-                        adj1[N*i+j][N*di+dj] = 1
-                    else:
-                        adj1[N*i+j][N*di+dj] = (data[di][dj] - data[i][j])+1
-
-    result = dijkstra(0, adj1)
-    print(f'#{tc} {result[-1]}')
+    for music in musicinfos:
+        music_info = music.split(',')
+        
+        start_time = music_info[0].split(':')
+        end_time = music_info[1].split(':')
+        
+        time_minutes = 60*(int(end_time[0]) - int(start_time[0])) + (int(end_time[1]) - int(start_time[1]))
+        
+        time_lst.append(time_minutes)
+        title_lst.append(music_info[2])
+        
+        codes = music_info[3]
+        int_codes = codes_to_int(codes)
+        play_once_time = len(int_codes)
+        
+        play_codes = ''
+        time = 0
+        while time !=time_minutes:
+            now_play = time%play_once_time
+            play_codes += int_codes[now_play]
+            time +=1
+        
+        codes_lst.append(play_codes)
+        index_lst.append(counting_index)
+        counting_index += 1
+    
+    max_minute = 0
+    min_index = len(time_lst)
+    
+    int_str_m = codes_to_int(m)
+    
+    for i in range(len(time_lst)):
+        if int_str_m in codes_lst[i]:
+            if time_lst[i] >max_minute:
+                answer = title_lst[i]
+                max_minute = time_lst[i]
+                min_index = index_lst[i]
+            elif time_lst[i] == max_minute:
+                if index_lst[i] < min_index:
+                    answer = title_lst[i]
+                    max_minute = time_lst[i]
+                    min_index = index_lst[i]
+            
+    return answer

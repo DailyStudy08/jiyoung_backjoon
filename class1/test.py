@@ -1,74 +1,31 @@
-dic = {'C':'a', 'C#':'b' , 'D':'c', 'D#':'d', 'E':'e', 'F':'f','F#':'g', 'G':'h', 'G#':'i','A':'j','A#':'k', 'B':'l', 'E#':'m'}
+exp = '100-200*300-500+20'
 
-def codes_to_int(code_str):
-    int_str = ''
-    for i in range(len(code_str)):
-        if i == len(code_str)-1:
-            if code_str[i] == '#':
-                continue
-            else:
-                int_str += dic[code_str[i]]
-        else:
-            if code_str[i] == '#':
-                continue
-            else:
-                if code_str[i+1] == '#':
-                    int_str += dic[code_str[i]+code_str[i+1]]
-                else:
-                    int_str += dic[code_str[i]]
-    return int_str
+exp = exp.split('+')
+
+for i in range(len(exp)):
+    exp[i] = exp[i].split('-')
+    for j in range(len(exp[i])):
+        exp[i][j] = exp[i][j].split('*')
 
 
-def solution(m, musicinfos):
-    
-    answer = '(None)'
-    time_lst = []
-    title_lst =[]
-    codes_lst =[]
-    counting_index = 0
-    index_lst = []
+for i in range(len(exp)):
+    for j in range(len(exp[i])):
+        num_tmp = int(exp[i][j][0])
+        for k in range(1,len(exp[i][j])):
+            num_tmp *= int(exp[i][j][k])
+        exp[i][j] = num_tmp
 
-    for music in musicinfos:
-        music_info = music.split(',')
-        
-        start_time = music_info[0].split(':')
-        end_time = music_info[1].split(':')
-        
-        time_minutes = 60*(int(end_time[0]) - int(start_time[0])) + (int(end_time[1]) - int(start_time[1]))
-        
-        time_lst.append(time_minutes)
-        title_lst.append(music_info[2])
-        
-        codes = music_info[3]
-        int_codes = codes_to_int(codes)
-        play_once_time = len(int_codes)
-        
-        play_codes = ''
-        time = 0
-        while time !=time_minutes:
-            now_play = time%play_once_time
-            play_codes += int_codes[now_play]
-            time +=1
-        
-        codes_lst.append(play_codes)
-        index_lst.append(counting_index)
-        counting_index += 1
-    
-    max_minute = 0
-    min_index = len(time_lst)
-    
-    int_str_m = codes_to_int(m)
-    
-    for i in range(len(time_lst)):
-        if int_str_m in codes_lst[i]:
-            if time_lst[i] >max_minute:
-                answer = title_lst[i]
-                max_minute = time_lst[i]
-                min_index = index_lst[i]
-            elif time_lst[i] == max_minute:
-                if index_lst[i] < min_index:
-                    answer = title_lst[i]
-                    max_minute = time_lst[i]
-                    min_index = index_lst[i]
-            
-    return answer
+for i in range(len(exp)):
+    num_tmp = int(exp[i][0])
+    for j in range(1,len(exp[i])):
+        num_tmp -= int(exp[i][j])
+    exp[i] = num_tmp
+
+num_tmp = exp[0]
+for i in range(1,len(exp)):
+    num_tmp += exp[i]
+
+exp = num_tmp
+
+
+print(abs(exp))

@@ -1,31 +1,23 @@
-exp = '100-200*300-500+20'
-
-exp = exp.split('+')
-
-for i in range(len(exp)):
-    exp[i] = exp[i].split('-')
-    for j in range(len(exp[i])):
-        exp[i][j] = exp[i][j].split('*')
+record =["Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan"]
 
 
-for i in range(len(exp)):
-    for j in range(len(exp[i])):
-        num_tmp = int(exp[i][j][0])
-        for k in range(1,len(exp[i][j])):
-            num_tmp *= int(exp[i][j][k])
-        exp[i][j] = num_tmp
+def solution(record):
+    dic = {}
+    result_lst = []
+    answer = []
+    for rec in record:
+        query = rec.split()
+        if query[0] == 'Enter':
+            result_lst.append(('님이 들어왔습니다.', query[1]))
+            dic[query[1]] = query[2]
+        elif query[0] == 'Leave':
+            result_lst.append(('님이 나갔습니다.', query[1]))
+        else:
+            dic[query[1]] = query[2]
+    
+    for result in result_lst:
+        answer.append(dic[result[1]] + result[0])
+    
+    return answer
 
-for i in range(len(exp)):
-    num_tmp = int(exp[i][0])
-    for j in range(1,len(exp[i])):
-        num_tmp -= int(exp[i][j])
-    exp[i] = num_tmp
-
-num_tmp = exp[0]
-for i in range(1,len(exp)):
-    num_tmp += exp[i]
-
-exp = num_tmp
-
-
-print(abs(exp))
+print(solution(record))
